@@ -190,7 +190,7 @@ Suppose you want to track your study focus over a 120-day period, where you had 
    - The output shows daily events, performance, and efficiency updates.
    - For example, a day with "Major Procrastination" (severity 4) has a performance of `1 - (4/10) = 60%`.
    - The new efficiency is calculated as: `0.04 × 60% + 0.96 × 65% ≈ 64.8%`.
-   - The forecast might indicate 38 perfect days needed to reach 85%.
+   - The forecast might indicate 21 perfect days needed to reach 85%.
 
 5. **Run Aggregate Analysis**:
    - Set 100 simulations with a max of 5 events per day.
