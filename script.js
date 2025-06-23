@@ -241,29 +241,52 @@ async function runSimulation() {
 <div>═══════════════════════════════════════</div>
 `;
 		output.appendChild(finalDiv);
+
+		// Calculate additional statistics
+		const imperfectDays = simDays - perfectDays;
+		const perfectDayRate = ((perfectDays / simDays) * 100).toFixed(2);
+		const imperfectDayRate = ((imperfectDays / simDays) * 100).toFixed(2);
+
 		// Update statistics display
 		stats.innerHTML = `
 <div class="stat-card">
-<div class="stat-value">${(monitor.currentEfficiency * 100).toFixed(2)}%</div>
-<div class="stat-label">Final Efficiency</div>
+  <div class="stat-value">${(monitor.currentEfficiency * 100).toFixed(2)}%</div>
+  <div class="stat-label">Final Efficiency</div>
 </div>
 <div class="stat-card">
-<div class="stat-value">${perfectDays}</div>
-<div class="stat-label">Perfect Days</div>
+  <div class="stat-value">${perfectDays}</div>
+  <div class="stat-label">Perfect Days</div>
 </div>
 <div class="stat-card">
-<div class="stat-value">${totalEvents}</div>
-<div class="stat-label">Total Events</div>
+  <div class="stat-value">${imperfectDays}</div>
+  <div class="stat-label">Imperfect Days</div>
 </div>
 <div class="stat-card">
-<div class="stat-value">${goalAchieved ? 'YES' : 'NO'}</div>
-<div class="stat-label">Goal Achieved</div>
+  <div class="stat-value">${perfectDayRate}%</div>
+  <div class="stat-label">Perfect Day Rate</div>
+</div>
+<div class="stat-card">
+  <div class="stat-value">${imperfectDayRate}%</div>
+  <div class="stat-label">Imperfect Day Rate</div>
+</div>
+<div class="stat-card">
+  <div class="stat-value">${simDays}</div>
+  <div class="stat-label">Simulation Days</div>
+</div>
+<div class="stat-card">
+  <div class="stat-value">${totalEvents}</div>
+  <div class="stat-label">Total Events</div>
+</div>
+<div class="stat-card">
+  <div class="stat-value">${goalAchieved ? 'YES' : 'NO'}</div>
+  <div class="stat-label">Goal Achieved</div>
 </div>
 `;
 	} catch (error) {
 		alert('Error running simulation: ' + error.message);
 	}
 }
+
 
 // --- Multiple Simulation Logic ---
 let myCharts = [];

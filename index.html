@@ -132,6 +132,20 @@
           <p><strong>Event-Based Tracking:</strong> Monitors specific events with customizable severity scores.</p>
           <p><strong>Predictive Forecasting:</strong> Calculates how many perfect days you need to reach your efficiency goals. </p>
           <p><strong>Dynamic Simulation:</strong> Generates realistic scenarios based on your event probability weights. </p>
+          <h3>💡 Practical Applications</h3>
+          <p><strong>Personal Productivity:</strong> Track habits, mistakes, or goal achievement. </p>
+          <p><strong>Quality Control:</strong> Monitor defects, errors, or process failures. </p>
+          <p><strong>Health & Wellness:</strong> Track dietary lapses, missed workouts, or medication adherence. </p>
+          <p><strong>Business Metrics:</strong> Monitor customer satisfaction, delivery performance, or operational efficiency. </p>
+          <h3>⚙️ Parameter Guide</h3>
+          <p><strong>Historical Data:</strong> Use past performance to set a realistic starting point. </p>
+          <p><strong>Smoothing Factor (\(\alpha\)):</strong> Start with 0.04-0.1 for most applications. Increase for faster adaptation to changes. </p>
+          <p><strong>Max Daily Severity:</strong> Set the upper limit for how bad a single day can be.
+            This prevents extreme outliers from dominating your score. </p>
+          <p><strong>Target Increment:</strong> Set realistic improvement goals. Small increments (5-20%) are often more achievable than dramatic changes. </p>
+          <p><strong>Perfect Day Probability:</strong> Set the probability of a perfect day to occur. </p>
+          <p><strong>Second Event Probability:</strong> Set the probability of a random second event to occur. </p>
+          
           <h3>📊 How EWMA Works</h3>
           <p>The Exponentially Weighted Moving Average gives exponentially decreasing weights to older observations. The formula is: </p>
           <div class="formula">
@@ -159,19 +173,6 @@
             $$ Days\ Needed = \lceil \frac{\ln(\frac{1 - E_{target}}{1 - E_{current}})}{\ln(1 - \alpha)} \rceil $$
           </div>
           <p>This mathematical model provides realistic expectations for goal achievement. </p>
-          <h3>💡 Practical Applications</h3>
-          <p><strong>Personal Productivity:</strong> Track habits, mistakes, or goal achievement. </p>
-          <p><strong>Quality Control:</strong> Monitor defects, errors, or process failures. </p>
-          <p><strong>Health & Wellness:</strong> Track dietary lapses, missed workouts, or medication adherence. </p>
-          <p><strong>Business Metrics:</strong> Monitor customer satisfaction, delivery performance, or operational efficiency. </p>
-          <h3>⚙️ Parameter Guide</h3>
-          <p><strong>Historical Data:</strong> Use past performance to set a realistic starting point. </p>
-          <p><strong>Smoothing Factor (\(\alpha\)):</strong> Start with 0.04-0.1 for most applications. Increase for faster adaptation to changes. </p>
-          <p><strong>Max Daily Severity:</strong> Set the upper limit for how bad a single day can be.
-            This prevents extreme outliers from dominating your score. </p>
-          <p><strong>Target Increment:</strong> Set realistic improvement goals. Small increments (5-20%) are often more achievable than dramatic changes. </p>
-          <p><strong>Perfect Day Probability:</strong> Set the probability of a perfect day to occur. </p>
-          <p><strong>Second Event Probability:</strong> Set the probability of a random second event to occur. </p>
           <h3>📐 Why the Forecasting Formula Works (Proof)</h3>
           <details>
             <summary>Click to expand mathematical proof</summary>
