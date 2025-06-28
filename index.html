@@ -309,10 +309,9 @@
             (AEM)</strong> works from start to finish.
         </p>
         <ul style="margin-left: 20px;">
-          <li><strong>Scenario:</strong> You want to track your focus during a 120-<span
-              class="js-time-unit-singular-lc">day</span> study period.
-            You recall that you had about <strong>42 bad <span class="js-time-unit-plural-lc">days</span></strong>
-            (<span class="js-time-unit-plural-lc">days</span> where you lost focus or wasted time).</li>
+          <li><strong>Scenario:</strong> You want to track your focus during a 120-day study period.
+            You recall that you had about <strong>42 bad days></strong>
+            (days where you lost focus or wasted time).</li>
           <li><strong>Step 1 – Initial Efficiency:</strong>
             \((1 - 42/120) \times 100 = 65\%.\)
             This becomes your starting point.
@@ -325,23 +324,23 @@
             </ul>
           </li>
           <li><strong>Step 3 – Simulation Settings:</strong>
-            You're simulating 25 future <span class="js-time-unit-plural-lc">days</span>. You set:
+            You're simulating 25 future days. You set:
             <ul style="margin-top: 5px;">
               <li>Max severity per unit = 10</li>
               <li>Smoothing factor (\(\alpha\)) = 0.04</li>
               <li>Target Efficiency = your goal is to reach 85% efficiency</li>
-              <li>Perfect <span class="js-time-unit-singular-lc">day</span> probability = 40%</li>
+              <li>Perfect day probability = 40%</li>
               <li>Second event probability = 35%</li>
             </ul>
           </li>
           <li><strong>Step 4 – Performance per Unit:</strong>
-            Suppose on <span class="js-time-unit-singular-cc">Day</span> 1 you had a “Major Procrastination” (severity
+            Suppose on Day 1 you had a “Major Procrastination” (severity
             4).<br>
             \( \text{Performance per Unit} = 1 - (4/10) = 0.6\)<br>
             \(New\ Efficiency = 0.04 \times 0.60 + 0.96 \times 0.65 = 0.648 \approx 64.8\%\)
           </li>
           <li><strong>Step 5 – Forecasting:</strong>
-            To reach 85% efficiency, AEM calculates how many perfect <span class="js-time-unit-plural-lc">days</span>
+            To reach 85% efficiency, AEM calculates how many perfect days
             you need using the forecast formula:<br>
             <span>
               \( \text{Units(Days)} = \left\lceil \frac{\ln\left(\frac{1 - 0.85}{1 - 0.648}\right)}{\ln(1 - 0.04)}
