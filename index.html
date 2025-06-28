@@ -1,288 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="style.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="data/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="data/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="data/favicon-16x16.png">
-    <link rel="manifest" href="data/site.webmanifest">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AEMS</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h1>🎯 Adaptive Efficiency Monitor Simulator (AEMS)</h1>
-        <p>Track and forecast your performance with advanced EWMA modeling</p>
-        <a href="https://github.com/yaseen454" target="_blank" class="github-link">
-          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub" width="28" height="28" style="vertical-align: middle;">
-        </a>
-      </div>
-      <div class="nav-tabs">
-        <button class="tab-button active" onclick="showTab('simulator')">Simulator</button>
-        <button class="tab-button" onclick="showTab('info')">How It Works</button>
-      </div>
-      <div id="simulator" class="tab-content active">
-        <div class="form-section">
-          <h3>📊 Historical Data</h3>
-          <p>Enter your historical performance data to set the initial efficiency:</p>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="badEvents">Number of Bad Events:</label>
-              <input type="number" id="badEvents" min="0" value="42" placeholder="e.g., 42">
-            </div>
-            <div class="form-group">
-              <label for="duration">Total Duration (days):</label>
-              <input type="number" id="duration" min="1" value="120" placeholder="e.g., 120">
-            </div>
+
+<head>
+  <link rel="stylesheet" href="style.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="data/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="data/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="data/favicon-16x16.png">
+  <link rel="manifest" href="data/site.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEMS</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎯 Adaptive Efficiency Monitor Simulator (AEMS)</h1>
+      <p>Track and forecast your performance with advanced EWMA modeling</p>
+      <a href="https://github.com/yaseen454" target="_blank" class="github-link">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub" width="28" height="28"
+          style="vertical-align: middle;">
+      </a>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-button active" onclick="showTab('simulator')">Simulator</button>
+      <button class="tab-button" onclick="showTab('info')">How It Works</button>
+    </div>
+    <div id="simulator" class="tab-content active">
+      <div class="form-section">
+        <h3>📊 Historical Data</h3>
+        <p>Enter your historical performance data to set the initial efficiency:</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="badEvents">Number of Bad Events:</label>
+            <input type="number" id="badEvents" min="0" value="42" placeholder="e.g., 42">
           </div>
-          <div id="initialEfficiencyDisplay">
-            <p><strong>Initial Efficiency:</strong> <span id="efficiencyValue">65.00%</span></p>
-            <div class="progress-bar">
-              <div class="progress-fill" id="efficiencyBar" style="width: 65%"></div>
-            </div>
+          <div class="form-group">
+            <label for="duration">Total Duration:</label>
+            <input type="number" id="duration" min="1" value="120" placeholder="e.g., 120">
           </div>
-        </div>
-        <div class="form-section">
-          <h3>⚙️ Simulation Parameters</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="simDays">Days to Simulate:</label>
-              <input type="number" id="simDays" min="1" max="365" value="25" placeholder="e.g., 25">
-            </div>
-            <div class="form-group">
-              <label for="maxSeverity">Max Daily Severity:</label>
-              <input type="number" id="maxSeverity" min="1" value="10" placeholder="e.g., 10">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="targetIncrement">Target Efficiency Increment (%):</label>
-              <input type="number" id="targetIncrement" min="0" max="100" step="0.1" value="20" placeholder="e.g., 20">
-            </div>
-            <div class="form-group">
-              <label for="smoothingFactor">Smoothing Factor (α):</label>
-              <input type="number" id="smoothingFactor" min="0.01" max="1" step="0.01" value="0.04" placeholder="e.g., 0.04">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="perfectDayProb">Perfect Day Probability (%):</label>
-              <input type="number" id="perfectDayProb" min="0" max="100" step="0.1" value="40" placeholder="e.g., 40">
-            </div>
-            <div class="form-group">
-              <label for="secondEventProb">Second Event Probability (%):</label>
-              <input type="number" id="secondEventProb" min="0" max="100" step="0.1" value="35" placeholder="e.g., 35">
-            </div>
+          <div class="form-group">
+            <label for="timeUnit">Unit of Time:</label>
+            <select id="timeUnit">
+              <option value="Seconds">Seconds</option>
+              <option value="Minutes">Minutes</option>
+              <option value="Hours">Hours</option>
+              <option value="days" selected>Days</option>
+              <option value="weeks">Weeks</option>
+              <option value="months">Months</option>
+              <option value="quarters">Quarters</option>
+              <option value="years">Years</option>
+            </select>
           </div>
         </div>
-        <div class="form-section">
-          <h3>📝 Event Severity Profile</h3>
-          <p>Define the types of events and their severity scores:</p>
-          <div class="severity-events" id="severityEvents">
-            <div class="event-input">
-              <input type="text" placeholder="Event name" value="Minor Issue">
-              <input type="number" placeholder="Severity" min="0" value="1">
-              <button type="button" class="btn btn-danger" onclick="removeEvent(this)">Remove</button>
-            </div>
+        <div id="initialEfficiencyDisplay">
+          <p><strong>Initial Efficiency:</strong> <span id="efficiencyValue">65.00%</span></p>
+          <div class="progress-bar">
+            <div class="progress-fill" id="efficiencyBar" style="width: 65%"></div>
           </div>
-          <button type="button" class="btn btn-secondary" onclick="addEvent()">Add Event Type</button>
+        </div>
+      </div>
+      <div class="form-section">
+        <h3>⚙️ Simulation Parameters</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="simDays" id="simDaysLabel">Days to Simulate:</label>
+            <input type="number" id="simDays" min="1" max="365" value="25" placeholder="e.g., 25">
+          </div>
+          <div class="form-group">
+            <label for="maxSeverity" id="maxSeverityLabel">Max Daily Severity:</label>
+            <input type="number" id="maxSeverity" min="1" value="10" placeholder="e.g., 10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="targetEfficiency">Target Efficiency (%):</label>
+            <input type="number" id="targetEfficiency" min="0" max="100" step="0.1" value="85" placeholder="e.g., 85">
+          </div>
+          <div class="form-group">
+            <label for="smoothingFactor">Smoothing Factor (α):</label>
+            <input type="number" id="smoothingFactor" min="0.01" max="1" step="0.01" value="0.04"
+              placeholder="e.g., 0.04">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="perfectDayProb" id="perfectUnitProbLabel">Perfect Day Probability (%):</label>
+            <input type="number" id="perfectDayProb" min="0" max="100" step="0.1" value="40" placeholder="e.g., 40">
+          </div>
+          <div class="form-group">
+            <label for="secondEventProb">Second Event Probability (%):</label>
+            <input type="number" id="secondEventProb" min="0" max="100" step="0.1" value="35" placeholder="e.g., 35">
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <h3>📝 Event Severity Profile</h3>
+        <p>Define the types of events and their severity scores:</p>
+        <div class="severity-events" id="severityEvents">
+          <div class="event-input">
+            <input type="text" placeholder="Event name" value="Minor Issue">
+            <input type="number" placeholder="Severity" min="0" value="1">
+            <button type="button" class="btn btn-danger" onclick="removeEvent(this)">Remove</button>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addEvent()">Add Event Type</button>
+      </div>
+      <div class="simulation-controls">
+        <button class="btn" onclick="runSimulation()">🚀 Run Simulation</button>
+        <button class="btn btn-secondary" onclick="clearOutput()">Clear Output</button>
+      </div>
+      <div id="simulationStats" class="stats-grid" style="display: none;"></div>
+      <div id="simulationOutput" class="simulation-output" style="display: none;"></div>
+      <div class="form-section aggregate-analysis">
+        <h3>📈 Aggregate Analysis (Multiple Simulations)</h3>
+        <p>Run multiple simulations to analyze performance trends and probabilities.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nRuns">Number of Simulations:</label>
+            <input type="number" id="nRuns" min="10" max="10000" value="100" placeholder="e.g., 100">
+          </div>
+          <div class="form-group">
+            <label for="maxEventsPerDay" id="maxEventsPerUnitLabel">Max Events Per Day (for this analysis):</label>
+            <input type="number" id="maxEventsPerDay" min="0" max="20" value="5" placeholder="e.g., 5">
+          </div>
+          <div class="form-group">
+            <label for="useProbabilitiesInMultiSim">Use Perfect/Second Event Probabilities:</label>
+            <select id="useProbabilitiesInMultiSim" onchange="toggleProbWarning()">
+              <option value="yes">Yes</option>
+              <option value="no" selected>No</option>
+            </select>
+            <small id="probWarning" style="color: gray; display: block; margin-top: 4px;">
+              ⚠️ May produce <strong>unrealistically optimistic</strong> results depending on probability settings.
+            </small>
+          </div>
         </div>
         <div class="simulation-controls">
-          <button class="btn" onclick="runSimulation()">🚀 Run Simulation</button>
-          <button class="btn btn-secondary" onclick="clearOutput()">Clear Output</button>
+          <button class="btn" onclick="runMultipleSimulations()">📊 Run Aggregate Analysis</button>
         </div>
-        <div id="simulationStats" class="stats-grid" style="display: none;"></div>
-        <div id="simulationOutput" class="simulation-output" style="display: none;"></div>
-        <div class="form-section aggregate-analysis">
-          <h3>📈 Aggregate Analysis (Multiple Simulations)</h3>
-          <p>Run multiple simulations to analyze performance trends and probabilities.</p>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="nRuns">Number of Simulations:</label>
-              <input type="number" id="nRuns" min="10" max="10000" value="100" placeholder="e.g., 100">
-            </div>
-            <div class="form-group">
-              <label for="maxEventsPerDay">Max Events Per Day (for this analysis):</label>
-              <input type="number" id="maxEventsPerDay" min="0" max="20" value="5" placeholder="e.g., 5">
-            </div>
-          </div>
-          <div class="simulation-controls">
-            <button class="btn" onclick="runMultipleSimulations()">📊 Run Aggregate Analysis</button>
-          </div>
-          <div id="multiSimStats" class="stats-grid" style="display: none;"></div>
-          <div id="chartContainer" class="chart-container" style="display: none;">
-            <div class="chart-wrapper"><canvas id="finalEfficiencyChart"></canvas></div>
-            <div class="chart-wrapper"><canvas id="daysToGoalChart"></canvas></div>
-            <div class="chart-wrapper"><canvas id="efficiencyLineChart"></canvas></div>
-            <div class="chart-wrapper"><canvas id="daysToGoalLineChart"></canvas></div>
-          </div>
-        </div>
-      </div>
-      <div id="info" class="tab-content">
-        <div class="info-section">
-          <h2>What is the Adaptive Efficiency Monitor?</h2>
-          <p>The Adaptive Efficiency Monitor is a sophisticated performance tracking system that uses <span class="highlight">Exponentially Weighted Moving Average (EWMA)</span> to provide real-time insights into your efficiency trends and forecast future performance.
-          </p>
-          <h3>🎯 Key Features</h3>
-          <p><strong>Adaptive Scoring:</strong> Uses EWMA to give more weight to recent performance while maintaining historical context. </p>
-          <p><strong>Event-Based Tracking:</strong> Monitors specific events with customizable severity scores.</p>
-          <p><strong>Predictive Forecasting:</strong> Calculates how many perfect days you need to reach your efficiency goals. </p>
-          <p><strong>Dynamic Simulation:</strong> Generates realistic scenarios based on your event probability weights. </p>
-          <h3>💡 Practical Applications</h3>
-          <p><strong>Personal Productivity:</strong> Track habits, mistakes, or goal achievement. </p>
-          <p><strong>Quality Control:</strong> Monitor defects, errors, or process failures. </p>
-          <p><strong>Health & Wellness:</strong> Track dietary lapses, missed workouts, or medication adherence. </p>
-          <p><strong>Business Metrics:</strong> Monitor customer satisfaction, delivery performance, or operational efficiency. </p>
-          <h3>⚙️ Parameter Guide</h3>
-          <p><strong>Historical Data:</strong> Use past performance to set a realistic starting point. </p>
-          <p><strong>Smoothing Factor (\(\alpha\)):</strong> Start with 0.04-0.1 for most applications. Increase for faster adaptation to changes. </p>
-          <p><strong>Max Daily Severity:</strong> Set the upper limit for how bad a single day can be.
-            This prevents extreme outliers from dominating your score. </p>
-          <p><strong>Target Increment:</strong> Set realistic improvement goals. Small increments (5-20%) are often more achievable than dramatic changes. </p>
-          <p><strong>Perfect Day Probability:</strong> Set the probability of a perfect day to occur. </p>
-          <p><strong>Second Event Probability:</strong> Set the probability of a random second event to occur. </p>
-          
-          <h3>📊 How EWMA Works</h3>
-          <p>The Exponentially Weighted Moving Average gives exponentially decreasing weights to older observations. The formula is: </p>
-          <div class="formula">
-            $$ E_{new} = \alpha \cdot P_{daily} + (1 - \alpha) \cdot E_{prev} $$
-          </div>
-          <p>Where <strong>\(\alpha\) (alpha)</strong> is the smoothing factor between 0 and 1: </p>
-          <ul style="margin-left: 20px; margin-bottom: 15px;">
-            <li><strong>Higher \(\alpha\) (0.1 - 0.3):</strong> More responsive to recent changes </li>
-            <li><strong>Lower \(\alpha\) (0.01 - 0.1):</strong> More stable, less reactive to daily fluctuations </li>
-          </ul>
-          <h3>🔢 Daily Performance Calculation</h3>
-          <p>Each day's performance is calculated based on the events that occur: </p>
-          <div class="formula">
-            $$ Daily\ Performance = 1 - \frac{\sum Severity\ of\ Events}{Max\ Daily\ Severity} $$
-          </div>
-          <p>This ensures that: </p>
-          <ul style="margin-left: 20px; margin-bottom: 15px;">
-            <li>Perfect days (no events) = 100% performance </li>
-            <li>Days with maximum severity = 0% performance </li>
-            <li>Everything else falls proportionally between these extremes </li>
-          </ul>
-          <h3>🔮 Forecasting Algorithm</h3>
-          <p>The system calculates how many consecutive perfect days are needed to reach your target efficiency using: </p>
-          <div class="formula">
-            $$ Days\ Needed = \lceil \frac{\ln(\frac{1 - E_{target}}{1 - E_{current}})}{\ln(1 - \alpha)} \rceil $$
-          </div>
-          <p>This mathematical model provides realistic expectations for goal achievement. </p>
-          <h3>📐 Why the Forecasting Formula Works (Proof)</h3>
-          <details>
-            <summary>Click to expand mathematical proof</summary>
-            <p>The forecasting formula calculates the number of consecutive "perfect days" (where daily performance is 100%) required to increase your efficiency from a current value \(E_{current}\) to a target value \(E_{target}\). Here is the step-by-step derivation:</p>
-            <ol style="margin-left: 20px; margin-top: 15px;">
-              <li style="margin-bottom: 10px;">
-                <strong>Start with the EWMA formula:</strong><br>
-                The efficiency on any given day \(E_{new}\) is a weighted average of the current day's performance \(P_{daily}\) and the previous day's efficiency \(E_{prev}\).
-                <div class="formula">
-                  $$ E_{new} = \alpha \cdot P_{daily} + (1 - \alpha) \cdot E_{prev} $$
-                </div>
-              </li>
-              <li style="margin-bottom: 10px;">
-                <strong>Define the recurrence for consecutive perfect days:</strong><br>
-                For a perfect day, $$ P_{daily} = 1 $$. Let \(E_n\) be the efficiency after \(n\) consecutive perfect days, starting from an initial efficiency of \(E_0\). The formula becomes a recurrence relation:
-                <div class="formula">
-                  $$ E_n = \alpha \cdot 1 + (1 - \alpha) \cdot E_{n-1} $$
-                </div>
-              </li>
-              <li style="margin-bottom: 10px;">
-                <strong>Solve the recurrence relation:</strong><br>
-                To find a direct formula for \(E_n\), we can solve this relation. It's easier if we define a new variable, the "inefficiency," as \(D_n = 1 - E_n\). Substituting \(E_n = 1 - D_n\) into the recurrence:
-                <div class="formula">
-                  $$ 1 - D_n = \alpha + (1 - \alpha)(1 - D_{n-1}) $$ <br>
-                  $$ 1 - D_n = \alpha + 1 - \alpha - (1 - \alpha)D_{n-1} $$ <br>
-                  $$ -D_n = -(1 - \alpha)D_{n-1} $$ <br>
-                  $$ D_n = (1 - \alpha)D_{n-1} $$
-                </div>
-                This shows that the inefficiency decreases geometrically each day. After \(n\) days, the relationship is:
-                <div class="formula">
-                  $$ D_n = (1 - \alpha)^n \cdot D_0 $$
-                </div>
-                Substituting back \(E_n\) and \(E_0\), we get the explicit formula for efficiency after \(n\) perfect days:
-                <div class="formula">
-                  $$ E_n = 1 - (1 - E_0)(1 - \alpha)^n $$
-                </div>
-              </li>
-              <li style="margin-bottom: 10px;">
-                <strong>Solve for \(n\) (Days Needed):</strong><br>
-                Now, we set \(E_0 = E_{current}\) and we want to find the number of days \(n\) it takes for the efficiency \(E_n\) to reach \(E_{target}\).
-                <div class="formula">
-                  $$ E_{target} = 1 - (1 - E_{current})(1 - \alpha)^n $$
-                </div>
-                We rearrange the equation to isolate \(n\):
-                <div class="formula">
-                  $$ \frac{1 - E_{target}}{1 - E_{current}} = (1 - \alpha)^n $$
-                </div>
-                Take the natural logarithm (ln) of both sides to bring \(n\) down from the exponent:
-                <div class="formula">
-                  $$ \ln\left(\frac{1 - E_{target}}{1 - E_{current}}\right) = n \cdot \ln(1 - \alpha) $$
-                </div>
-                Finally, we solve for \(n\):
-                <div class="formula">
-                  $$ n = \frac{\ln\left(\frac{1 - E_{target}}{1 - E_{current}}\right)}{\ln(1 - \alpha)} $$
-                </div>
-              </li>
-              <li style="margin-bottom: 10px;">
-                <strong>Final Step - The Ceiling Function:</strong><br>
-                Since the number of days must be an integer, and we need to guarantee we meet or exceed the target, we take the ceiling of the result. This gives us the final forecasting formula used in the simulator.
-                <div class="formula">
-                  $$ Days\ Needed = \lceil n \rceil = \lceil \frac{\ln(\frac{1 - Target}{1 - Current})}{\ln(1 - \alpha)} \rceil $$
-                </div>
-              </li>
-            </ol>
-          </details>
-          <h3>📈 Visualizing EWMA Convergence</h3>
-          <p>This plot shows how fast your efficiency increases for different smoothing factors (\(\alpha\)) when every day is perfect:</p>
-          <img src="data/EWMA-image.png" alt="EWMA convergence plot" style="width: 100%; max-width: 600px; display: block; margin: 15px auto; border: 1px solid #ccc; padding: 8px; border-radius: 6px;">
-          <h3>📘 Example: Understanding AEM Step-by-Step</h3>
-          <p>
-            To make everything clearer, here's a complete example showing how the <strong>Adaptive Efficiency Monitor (AEM)</strong> works from start to finish.
-          </p>
-          <ul style="margin-left: 20px;">
-            <li><strong>Scenario:</strong> You want to track your focus during a 120-day study period.
-              You recall that you had about <strong>42 bad days</strong> (days where you lost focus or wasted time).</li>
-            <li><strong>Step 1 – Initial Efficiency:</strong>
-              \((1 - 42/120) \times 100 = 65\%.\)
-              This becomes your starting point.
-            </li>
-            <li><strong>Step 2 – Event Definitions:</strong>
-              You define possible daily issues:
-              <ul style="margin-top: 5px;">
-                <li>“Minor Distraction” – severity 1</li>
-                <li>“Major Procrastination” – severity 4</li>
-              </ul>
-            </li>
-            <li><strong>Step 3 – Simulation Settings:</strong>
-              You're simulating 25 future days. You set:
-              <ul style="margin-top: 5px;">
-                <li>Max daily severity = 10</li>
-                <li>Smoothing factor (\(\alpha\)) = 0.04</li>
-                <li>Target increment = 20% (your goal is to reach 85% efficiency)</li>
-                <li>Perfect day probability = 40%</li>
-                <li>Second event probability = 35%</li>
-              </ul>
-            </li>
-            <li><strong>Step 4 – Daily Performance:</strong>
-              Suppose on Day 1 you had a “Major Procrastination” (severity 4).<br>
-              \(Daily\ Performance = 1 - (4/10) = 0.6\)<br>
-              \(New\ Efficiency = 0.04 \times 0.60 + 0.96 \times 0.65 = 0.648 \approx 64.8\%\)
-            </li>
-            <li><strong>Step 5 – Forecasting:</strong>
-              To reach 85% efficiency, AEM calculates how many perfect days you need using the forecast formula:<br>
-              $$ Days = \lceil \ln((1 - 0.85)/(1 - 0.648)) / \ln(1 - 0.04) \rceil \approx 21\ days $$
-            </li>
-          </ul>
-          <p>This gives you an accurate, adaptive picture of your progress—and shows you what to expect moving forward based on your behavior patterns.</p>
+        <div id="multiSimStats" class="stats-grid" style="display: none;"></div>
+        <div id="chartContainer" class="chart-container" style="display: none;">
+          <div class="chart-wrapper"><canvas id="finalEfficiencyChart"></canvas></div>
+          <div class="chart-wrapper"><canvas id="daysToGoalChart"></canvas></div>
+          <div class="chart-wrapper"><canvas id="efficiencyLineChart"></canvas></div>
+          <div class="chart-wrapper"><canvas id="daysToGoalLineChart"></canvas></div>
         </div>
       </div>
     </div>
-    <script src='script.js'></script>
-  </body>
+    <div id="info" class="tab-content">
+      <div class="info-section">
+        <h2>What is the Adaptive Efficiency Monitor?</h2>
+        <p>The Adaptive Efficiency Monitor is a sophisticated performance tracking system that uses <span
+            class="highlight">Exponentially Weighted Moving Average (EWMA)</span> to provide real-time insights into
+          your efficiency trends and forecast future performance.
+        </p>
+        <h3>🎯 Key Features</h3>
+        <p><strong>Adaptive Scoring:</strong> Uses EWMA to give more weight to recent performance while maintaining
+          historical context. </p>
+        <p><strong>Event-Based Tracking:</strong> Monitors specific events with customizable severity scores.</p>
+        <p><strong>Predictive Forecasting:</strong> Calculates how many perfect <span
+            class="js-time-unit-plural-lc">days</span> you need to reach your efficiency goals. </p>
+        <p><strong>Dynamic Simulation:</strong> Generates realistic scenarios based on your event probability weights.
+        </p>
+        <h3>💡 Practical Applications</h3>
+        <p><strong>Personal Productivity:</strong> Track habits, mistakes, or goal achievement. </p>
+        <p><strong>Quality Control:</strong> Monitor defects, errors, or process failures. </p>
+        <p><strong>Health & Wellness:</strong> Track dietary lapses, missed workouts, or medication adherence. </p>
+        <p><strong>Business Metrics:</strong> Monitor customer satisfaction, delivery performance, or operational
+          efficiency. </p>
+        <h3>⚙️ Parameter Guide</h3>
+        <p><strong>Historical Data:</strong> Use past performance to set a realistic starting point. </p>
+        <p><strong>Unit of Time:</strong> Select the preferred unit of time for your system.</p>
+        <p><strong>Smoothing Factor (\(\alpha\)):</strong> Start with 0.04-0.1 for most applications. Increase for
+          faster adaptation to changes. </p>
+        <p><strong>Max <span class="js-time-unit-singular-cc">Daily</span> Severity:</strong> Set the upper limit for
+          how bad a single <span class="js-time-unit-singular-lc">day</span> can be.
+          This prevents extreme outliers from dominating your score. </p>
+        <p><strong>Target Efficiency:</strong> Set realistic improvement goals. Small increments (5-20%) are often more
+          achievable than dramatic changes. </p>
+        <p><strong>Perfect <span class="js-time-unit-singular-cc">Day</span> Probability:</strong> Set the probability
+          of a perfect <span class="js-time-unit-singular-lc">day</span> to occur. </p>
+        <p><strong>Second Event Probability:</strong> Set the probability of a random second event to occur. </p>
+
+        <h3>📊 How EWMA Works</h3>
+        <p>The Exponentially Weighted Moving Average gives exponentially decreasing weights to older observations. The
+          formula is: </p>
+        <div class="formula">
+          $$ E_{new} = \alpha \cdot P_{unit} + (1 - \alpha) \cdot E_{prev} $$
+        </div>
+        <p>Where <strong>\(\alpha\) (alpha)</strong> is the smoothing factor between 0 and 1: </p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+          <li><strong>Higher \(\alpha\) (0.1 - 0.3):</strong> More responsive to recent changes </li>
+          <li><strong>Lower \(\alpha\) (0.01 - 0.1):</strong> More stable, less reactive to daily fluctuations </li>
+        </ul>
+        <h3 id="unit-performance-calc-heading">🔢 Daily Performance Calculation</h3>
+        <p>Each <span class="js-time-unit-singular-lc">day</span>'s performance is calculated based on the events that
+          occur: </p>
+        <div class="formula">
+          $$ \text{Performance per Unit} = 1 - \frac{\sum Severity\ of\ Events}{\text{Max Severity per Unit}} $$
+        </div>
+        <p>This ensures that: </p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+          <li>Perfect <span class="js-time-unit-plural-lc">days</span> (no events) = 100% performance </li>
+          <li><span class="js-time-unit-plural-cc">Days</span> with maximum severity = 0% performance </li>
+          <li>Everything else falls proportionally between these extremes </li>
+        </ul>
+        <h3>🔮 Forecasting Algorithm</h3>
+        <p>The system calculates how many consecutive perfect <span class="js-time-unit-plural-lc">days</span> are
+          needed to reach your target efficiency using: </p>
+        <div class="formula">
+          $$ \text{Units Needed} = \lceil \frac{\ln(\frac{1 - E_{target}}{1 - E_{current}})}{\ln(1 - \alpha)} \rceil $$
+        </div>
+        <p>This mathematical model provides realistic expectations for goal achievement. </p>
+        <h3>📐 Why the Forecasting Formula Works (Proof)</h3>
+        <details>
+          <summary>Click to expand mathematical proof</summary>
+          <p>The forecasting formula calculates the number of consecutive "perfect <span
+              class="js-time-unit-plural-lc">days</span>" (where performance for the unit is 100%) required to increase
+            your efficiency from a current value \(E_{current}\) to a target value \(E_{target}\).
+            Here is the step-by-step derivation:</p>
+          <ol style="margin-left: 20px; margin-top: 15px;">
+            <li style="margin-bottom: 10px;">
+              <strong>Start with the EWMA formula:</strong><br>
+              The efficiency on any given <span class="js-time-unit-singular-lc">day</span> \(E_{new}\) is a weighted
+              average of the current <span class="js-time-unit-singular-lc">day</span>'s performance \(P_{unit}\) and
+              the previous <span class="js-time-unit-singular-lc">day</span>'s efficiency \(E_{prev}\).
+              <div class="formula">
+                $$ E_{new} = \alpha \cdot P_{unit} + (1 - \alpha) \cdot E_{prev} $$
+              </div>
+            </li>
+            <li style="margin-bottom: 10px;">
+              <strong>Define the recurrence for consecutive perfect <span
+                  class="js-time-unit-plural-lc">days</span>:</strong><br>
+              For a perfect <span class="js-time-unit-singular-lc">day</span>, $$ P_{unit} = 1 $$. Let \(E_n\) be the
+              efficiency after \(n\) consecutive perfect <span class="js-time-unit-plural-lc">days</span>, starting from
+              an initial efficiency of \(E_0\).
+              The formula becomes a recurrence relation:
+              <div class="formula">
+                $$ E_n = \alpha \cdot 1 + (1 - \alpha) \cdot E_{n-1} $$
+              </div>
+            </li>
+            <li style="margin-bottom: 10px;">
+              <strong>Solve the recurrence relation:</strong><br>
+              To find a direct formula for \(E_n\), we can solve this relation.
+              It's easier if we define a new variable, the "inefficiency," as \(D_n = 1 - E_n\).
+              Substituting \(E_n = 1 - D_n\) into the recurrence:
+              <div class="formula">
+                $$ 1 - D_n = \alpha + (1 - \alpha)(1 - D_{n-1}) $$ <br>
+                $$ 1 - D_n = \alpha + 1 - \alpha - (1 - \alpha)D_{n-1} $$ <br>
+                $$ -D_n = -(1 - \alpha)D_{n-1} $$ <br>
+                $$ D_n = (1 - \alpha)D_{n-1} $$
+              </div>
+              This shows that the inefficiency decreases geometrically each <span
+                class="js-time-unit-singular-lc">day</span>. After \(n\) <span
+                class="js-time-unit-plural-lc">days</span>, the relationship is:
+              <div class="formula">
+                $$ D_n = (1 - \alpha)^n \cdot D_0 $$
+              </div>
+              Substituting back \(E_n\) and \(E_0\), we get the explicit formula for efficiency after \(n\) perfect
+              <span class="js-time-unit-plural-lc">days</span>:
+              <div class="formula">
+                $$ E_n = 1 - (1 - E_0)(1 - \alpha)^n $$
+              </div>
+            </li>
+            <li style="margin-bottom: 10px;">
+              <strong>Solve for \(n\) (<span class="js-time-unit-plural-cc">Days</span> Needed):</strong><br>
+              Now, we set \(E_0 = E_{current}\) and we want to find the number of <span
+                class="js-time-unit-plural-lc">days</span> \(n\) it takes for the efficiency \(E_n\) to reach
+              \(E_{target}\).
+              <div class="formula">
+                $$ E_{target} = 1 - (1 - E_{current})(1 - \alpha)^n $$
+              </div>
+              We rearrange the equation to isolate \(n\):
+              <div class="formula">
+                $$ \frac{1 - E_{target}}{1 - E_{current}} = (1 - \alpha)^n $$
+              </div>
+              Take the natural logarithm (ln) of both sides to bring \(n\) down from the exponent:
+              <div class="formula">
+                $$ \ln\left(\frac{1 - E_{target}}{1 - E_{current}}\right) = n \cdot \ln(1 - \alpha) $$
+              </div>
+              Finally, we solve for \(n\):
+              <div class="formula">
+                $$ n = \frac{\ln\left(\frac{1 - E_{target}}{1 - E_{current}}\right)}{\ln(1 - \alpha)} $$
+              </div>
+            </li>
+            <li style="margin-bottom: 10px;">
+              <strong>Final Step - The Ceiling Function:</strong><br>
+              Since the number of <span class="js-time-unit-plural-lc">days</span> must be an integer, and we need to
+              guarantee we meet or exceed the target, we take the ceiling of the result.
+              This gives us the final forecasting formula used in the simulator.
+              <div class="formula">
+                $$ \text{Units Needed} = \lceil n \rceil = \lceil \frac{\ln(\frac{1 - Target}{1 - Current})}{\ln(1 -
+                \alpha)} \rceil $$
+              </div>
+            </li>
+          </ol>
+        </details>
+        <h3>📈 Visualizing EWMA Convergence</h3>
+        <p>This plot shows how fast your efficiency increases for different smoothing factors (\(\alpha\)) when every
+          <span class="js-time-unit-singular-lc">day</span> is perfect:
+        </p>
+        <img src="data/EWMA-image.png" alt="EWMA convergence plot"
+          style="width: 100%; max-width: 600px; display: block; margin: 15px auto; border: 1px solid #ccc; padding: 8px; border-radius: 6px;">
+        <h3>📘 Example: Understanding AEM Step-by-Step</h3>
+        <p>
+          To make everything clearer, here's a complete example showing how the <strong>Adaptive Efficiency Monitor
+            (AEM)</strong> works from start to finish.
+        </p>
+        <ul style="margin-left: 20px;">
+          <li><strong>Scenario:</strong> You want to track your focus during a 120-<span
+              class="js-time-unit-singular-lc">day</span> study period.
+            You recall that you had about <strong>42 bad <span class="js-time-unit-plural-lc">days</span></strong>
+            (<span class="js-time-unit-plural-lc">days</span> where you lost focus or wasted time).</li>
+          <li><strong>Step 1 – Initial Efficiency:</strong>
+            \((1 - 42/120) \times 100 = 65\%.\)
+            This becomes your starting point.
+          </li>
+          <li><strong>Step 2 – Event Definitions:</strong>
+            You define possible issues for each time unit:
+            <ul style="margin-top: 5px;">
+              <li>“Minor Distraction” – severity 1</li>
+              <li>“Major Procrastination” – severity 4</li>
+            </ul>
+          </li>
+          <li><strong>Step 3 – Simulation Settings:</strong>
+            You're simulating 25 future <span class="js-time-unit-plural-lc">days</span>. You set:
+            <ul style="margin-top: 5px;">
+              <li>Max severity per unit = 10</li>
+              <li>Smoothing factor (\(\alpha\)) = 0.04</li>
+              <li>Target Efficiency = your goal is to reach 85% efficiency</li>
+              <li>Perfect <span class="js-time-unit-singular-lc">day</span> probability = 40%</li>
+              <li>Second event probability = 35%</li>
+            </ul>
+          </li>
+          <li><strong>Step 4 – Performance per Unit:</strong>
+            Suppose on <span class="js-time-unit-singular-cc">Day</span> 1 you had a “Major Procrastination” (severity
+            4).<br>
+            \( \text{Performance per Unit} = 1 - (4/10) = 0.6\)<br>
+            \(New\ Efficiency = 0.04 \times 0.60 + 0.96 \times 0.65 = 0.648 \approx 64.8\%\)
+          </li>
+          <li><strong>Step 5 – Forecasting:</strong>
+            To reach 85% efficiency, AEM calculates how many perfect <span class="js-time-unit-plural-lc">days</span>
+            you need using the forecast formula:<br>
+            <span>
+              \( \text{Units(Days)} = \left\lceil \frac{\ln\left(\frac{1 - 0.85}{1 - 0.648}\right)}{\ln(1 - 0.04)}
+              \right\rceil \approx 21 \)
+            </span>
+            <span class="js-time-unit-plural-lc">days</span>
+          </li>
+        </ul>
+        <p>This gives you an accurate, adaptive picture of your progress—and shows you what to expect moving forward
+          based on your behavior patterns.</p>
+      </div>
+    </div>
+  </div>
+  <script src='script.js'></script>
+</body>
+
 </html>
