@@ -326,27 +326,27 @@
           <li><strong>Step 3 – Simulation Settings:</strong>
             You're simulating 25 future days. You set:
             <ul style="margin-top: 5px;">
-              <li>Max severity per unit = 10</li>
+              <li>Max severity per day = 10</li>
               <li>Smoothing factor (\(\alpha\)) = 0.04</li>
               <li>Target Efficiency = your goal is to reach 85% efficiency</li>
               <li>Perfect day probability = 40%</li>
               <li>Second event probability = 35%</li>
             </ul>
           </li>
-          <li><strong>Step 4 – Performance per Unit:</strong>
+          <li><strong>Step 4 – Performance per Day:</strong>
             Suppose on Day 1 you had a “Major Procrastination” (severity
             4).<br>
-            \( \text{Performance per Unit} = 1 - (4/10) = 0.6\)<br>
+            \( \text{Performance per Day} = 1 - (4/10) = 0.6\)<br>
             \(New\ Efficiency = 0.04 \times 0.60 + 0.96 \times 0.65 = 0.648 \approx 64.8\%\)
           </li>
           <li><strong>Step 5 – Forecasting:</strong>
             To reach 85% efficiency, AEM calculates how many perfect days
             you need using the forecast formula:<br>
             <span>
-              \( \text{Units(Days)} = \left\lceil \frac{\ln\left(\frac{1 - 0.85}{1 - 0.648}\right)}{\ln(1 - 0.04)}
+              \( \text{Days} = \left\lceil \frac{\ln\left(\frac{1 - 0.85}{1 - 0.648}\right)}{\ln(1 - 0.04)}
               \right\rceil \approx 21 \)
             </span>
-            <span class="js-time-unit-plural-lc">days</span>
+            days
           </li>
         </ul>
         <p>This gives you an accurate, adaptive picture of your progress—and shows you what to expect moving forward
